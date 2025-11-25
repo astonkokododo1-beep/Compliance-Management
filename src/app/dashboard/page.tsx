@@ -1,16 +1,9 @@
-import { getServerSession } from 'next-auth'
-import { redirect } from 'next/navigation'
-import { authOptions } from '@/lib/auth'
-import { db } from '@/lib/db'
-import { cn } from '@/lib/utils'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Progress } from '@/components/ui/progress'
 import { AlertTriangle, CheckCircle, Clock, TrendingUp, Users, FileText, Shield } from 'lucide-react'
-import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
+import { RiskTrendChart, ComplianceStatusChart } from '@/components/dashboard/dashboard-charts'
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions)
-  
+
   if (!session) {
     redirect('/auth/signin')
   }
@@ -107,15 +100,7 @@ export default async function DashboardPage() {
             <CardDescription>Risk score over last 6 months</CardDescription>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={riskData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="month" />
-                <YAxis />
-                <Tooltip />
-                <Line type="monotone" dataKey="risk" stroke="#1e40af" strokeWidth={2} />
-              </LineChart>
-            </ResponsiveContainer>
+            <RiskTrendChart data={riskData} />
           </CardContent>
         </Card>
         <Card>
@@ -124,24 +109,7 @@ export default async function DashboardPage() {
             <CardDescription>By compliance area</CardDescription>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={categoryData}
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={80}
-                  fill="#8884d8"
-                  dataKey="value"
-                  label
-                >
-                  {categoryData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
+            <ComplianceStatusChart data={categoryData} />
           </CardContent>
         </Card>
       </div>

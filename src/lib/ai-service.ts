@@ -54,7 +54,13 @@ Generate a complete, ready-to-implement policy document.`
     timing: string
     frequency: number
     jurisdiction: string
-  }) {
+  }): Promise<{
+    riskScore: number
+    riskLevel: string
+    redFlags: string[]
+    recommendation: string
+    requiredApprovers: string[]
+  }> {
     const prompt = `Analyze the compliance risk of this gift/hospitality scenario:
 
 Gift Details:
@@ -75,7 +81,18 @@ Provide:
 Return as JSON with fields: riskScore, riskLevel, redFlags[], recommendation, requiredApprovers[]`
 
     const response = await this.callGemini(prompt)
-    return JSON.parse(response.content)
+    try {
+      return JSON.parse(response.content)
+    } catch (e) {
+      console.error("Failed to parse AI response", e)
+      return {
+        riskScore: 0,
+        riskLevel: "Unknown",
+        redFlags: ["AI Analysis Failed"],
+        recommendation: "Manual Review",
+        requiredApprovers: []
+      }
+    }
   }
 
   async analyzeCOI(data: {
@@ -100,7 +117,13 @@ Return detailed analysis with conflict scores.`
     return this.callGemini(prompt)
   }
 
-  async triageComplaint(description: string) {
+  async triageComplaint(description: string): Promise<{
+    category: string
+    severity: string
+    suggestedInvestigation: string
+    priority: number
+    requiredExpertise: string[]
+  }> {
     const prompt = `Categorize and assess this whistleblowing complaint:
 
 "${description}"
@@ -112,10 +135,21 @@ Provide:
 4. Priority level (1-5)
 5. Required expertise
 
-Return as JSON.`
+Return as JSON with fields: category, severity, suggestedInvestigation, priority, requiredExpertise`
 
     const response = await this.callGroq(prompt)
-    return JSON.parse(response.content)
+    try {
+      return JSON.parse(response.content)
+    } catch (e) {
+      console.error("Failed to parse AI response", e)
+      return {
+        category: "Other",
+        severity: "Medium",
+        suggestedInvestigation: "Manual Review Required",
+        priority: 3,
+        requiredExpertise: ["Compliance"]
+      }
+    }
   }
 
   async detectFraudPatterns(transactions: any[]) {
