@@ -16,7 +16,7 @@ import { aiService } from '@/lib/ai-service'
 import { db } from '@/lib/db'
 import { useToast } from '@/components/ui/use-toast'
 import { generateCaseId } from '@/lib/utils'
-import { Loader2, Shield, Send } from 'lucide-react'
+import { Loader2, Shield, Send, Upload } from 'lucide-react'
 
 const formSchema = z.object({
   incidentType: z.string().min(1, 'Incident type is required'),
