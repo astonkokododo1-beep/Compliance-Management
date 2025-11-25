@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
+import { Label } from '@/components/ui/label'
 import { aiService } from '@/lib/ai-service'
 import { useToast } from '@/components/ui/use-toast'
 import { db } from '@/lib/db'
@@ -314,10 +315,10 @@ export function GiftDeclarationForm({ userId }: GiftDeclarationFormProps) {
                       riskAssessment.riskLevel === 'Critical'
                         ? 'destructive'
                         : riskAssessment.riskLevel === 'High'
-                        ? 'destructive'
-                        : riskAssessment.riskLevel === 'Medium'
-                        ? 'secondary'
-                        : 'default'
+                          ? 'destructive'
+                          : riskAssessment.riskLevel === 'Medium'
+                            ? 'secondary'
+                            : 'default'
                     }
                   >
                     {riskAssessment.riskLevel}
