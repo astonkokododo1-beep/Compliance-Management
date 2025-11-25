@@ -85,7 +85,7 @@ export function AbacDetectionPanel() {
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium">Compliance Rate</CardTitle>
-          </CardHead
+          </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">98.2%</div>
             <p className="text-xs text-muted-foreground">vs 97.1% last quarter</p>
@@ -171,8 +171,8 @@ export function AbacDetectionPanel() {
                         alert.riskScore >= 80
                           ? 'destructive'
                           : alert.riskScore >= 60
-                          ? 'secondary'
-                          : 'default'
+                            ? 'secondary'
+                            : 'default'
                       }
                     >
                       {alert.riskScore}
